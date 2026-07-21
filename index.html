@@ -54,7 +54,7 @@ img {
 
 <input type="file" id="archivo" accept="image/*">
 
-<button onclick="subirFoto()">Subir foto</button>
+<button id="botonSubir">Subir foto</button>
 
 <div id="galeria"></div>
 
@@ -71,6 +71,9 @@ SUPABASE_KEY
 );
 
 
+document.getElementById("botonSubir").addEventListener("click", subirFoto);
+
+
 async function subirFoto(){
 
 const archivo = document.getElementById("archivo").files[0];
@@ -80,33 +83,40 @@ alert("Elegí una foto primero");
 return;
 }
 
+
 const nombre = Date.now() + "-" + archivo.name;
 
 
-const {data,error}=await supabase.storage
+const {error} = await supabase.storage
 .from("Fotos-evento")
-.upload(nombre,archivo);
+.upload(nombre, archivo);
 
 
 if(error){
-alert(error.message);
+alert("Error al subir: " + error.message);
 return;
 }
 
 
 const url = SUPABASE_URL +
-"/storage/v1/object/public/fotos-evento/" +
+"/storage/v1/object/public/Fotos-evento/" +
 nombre;
 
 
-await supabase
+const {error: errorBD} = await supabase
 .from("fotos")
 .insert({
 url:url
 });
 
 
-alert("Foto subida!");
+if(errorBD){
+alert("Error guardando foto: " + errorBD.message);
+return;
+}
+
+
+alert("Foto subida correctamente 🎉");
 
 mostrarFotos();
 
@@ -116,10 +126,16 @@ mostrarFotos();
 
 async function mostrarFotos(){
 
-const {data}=await supabase
+const {data,error}=await supabase
 .from("fotos")
 .select("*")
 .order("created_at",{ascending:false});
+
+
+if(error){
+console.log(error);
+return;
+}
 
 
 const galeria=document.getElementById("galeria");
