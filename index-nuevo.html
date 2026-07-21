@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Muro de Fotos</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+body {
+font-family: Arial, sans-serif;
+background: #111;
+color: white;
+text-align: center;
+margin: 0;
+padding: 20px;
+}
+
+h1 {
+font-size: 40px;
+}
+
+input, button {
+padding: 15px;
+margin: 10px;
+border-radius: 10px;
+border: none;
+}
+
+button {
+background: white;
+cursor: pointer;
+}
+
+#galeria {
+display: grid;
+grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+gap: 15px;
+margin-top: 30px;
+}
+
+img {
+width: 100%;
+border-radius: 15px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>📸 Muro de Fotos</h1>
+
+
+<input type="file" id="archivo" accept="image/*">
+
+
+<button id="botonSubir">
+Subir foto
+</button>
+
+
+<div id="galeria"></div>
+
+
+
+<script>
+
+
+const SUPABASE_URL = "https://xjztgmuhvfswumenahcy.supabase.co";
+
+
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqenRnbXVodmZzd3VtZW5haGN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2Mjk1MDksImV4cCI6MjEwMDIwNTUwOX0.Uw8YZQgenClMn8crmDTiY7Gh3GicQ96SRNgZEH3pNyY";
+
+
+const clienteSupabase = window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+
+document
+.getElementById("botonSubir")
+.addEventListener("click", subirFoto);
+
+
+
+async function subirFoto(){
+
+
+const archivo = document
+.getElementById("archivo")
+.files[0];
+
+
+if(!archivo){
+
+alert("Elegí una foto primero");
+
+return;
+
+}
+
+
+
+const nombreArchivo = Date.now() + "-" + archivo.name;
+
+
+
+const {error} = await clienteSupabase
+.storage
+.from("Fotos-evento")
+.upload(nombreArchivo, archivo);
+
+
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+
+
+const urlFoto = SUPABASE_URL +
+"/storage/v1/object/public/Fotos-evento/" +
+nombreArchivo;
+
+
+
+const {error: errorTabla} = await clienteSupabase
+.from("fotos")
+.insert({
+
+url:urlFoto
+
+});
+
+
+
+if(errorTabla){
+
+alert(errorTabla.message);
+
+return;
+
+}
+
+
+
+alert("Foto subida correctamente 🎉");
+
+
+mostrarFotos();
+
+
+}
+
+
+
+
+async function mostrarFotos(){
+
+
+const {data,error} = await clienteSupabase
+.from("fotos")
+.select("*")
+.order("created_at",{ascending:false});
+
+
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+
+
+const galeria = document
+.getElementById("galeria");
+
+
+galeria.innerHTML = "";
+
+
+
+data.forEach(foto=>{
+
+
+galeria.innerHTML += `
+
+<img src="${foto.url}">
+
+`;
+
+
+});
+
+
+}
+
+
+
+mostrarFotos();
+
+
+
+</script>
+
+
+</body>
+
+</html>
