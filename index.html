@@ -14,24 +14,20 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400&display=swap');
 
-
 *{
 box-sizing:border-box;
 }
-
 
 body{
 
 margin:0;
 padding:30px 20px;
-
 min-height:100vh;
 
 background:
 radial-gradient(circle at top,#252525 0%,#090909 45%,#000 100%);
 
 color:white;
-
 text-align:center;
 
 font-family:'Montserrat',sans-serif;
@@ -39,13 +35,11 @@ font-family:'Montserrat',sans-serif;
 }
 
 
-
 body:before{
 
 content:"";
 
 position:fixed;
-
 inset:0;
 
 background-image:
@@ -53,26 +47,21 @@ radial-gradient(#ffffff 1px,transparent 1px);
 
 background-size:70px 70px;
 
-opacity:.12;
+opacity:.10;
 
 pointer-events:none;
 
 }
 
 
-
 .contenedor{
 
 max-width:1100px;
-
 margin:auto;
-
 position:relative;
-
 z-index:2;
 
 }
-
 
 
 .mis15{
@@ -88,7 +77,6 @@ margin-top:20px;
 }
 
 
-
 .numero{
 
 font-family:'Cormorant Garamond',serif;
@@ -100,6 +88,7 @@ font-weight:600;
 line-height:.8;
 
 margin-top:20px;
+
 
 background:linear-gradient(
 180deg,
@@ -114,10 +103,9 @@ background:linear-gradient(
 color:transparent;
 
 text-shadow:
-0 0 25px rgba(255,255,255,.5);
+0 0 20px rgba(255,255,255,.4);
 
 }
-
 
 
 .nombre{
@@ -129,10 +117,9 @@ font-size:95px;
 margin-top:20px;
 
 text-shadow:
-0 0 20px #aaa;
+0 0 15px #aaa;
 
 }
-
 
 
 .titulo{
@@ -148,7 +135,6 @@ letter-spacing:8px;
 }
 
 
-
 .texto{
 
 margin-top:20px;
@@ -162,7 +148,6 @@ letter-spacing:5px;
 }
 
 
-
 input{
 
 margin-top:40px;
@@ -174,7 +159,6 @@ border-radius:30px;
 background:white;
 
 }
-
 
 
 button{
@@ -198,7 +182,6 @@ cursor:pointer;
 }
 
 
-
 button:hover{
 
 background:white;
@@ -208,20 +191,17 @@ color:black;
 }
 
 
-
 #galeria{
 
 margin-top:60px;
 
 display:grid;
 
-grid-template-columns:
-repeat(auto-fit,minmax(240px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 
 gap:20px;
 
 }
-
 
 
 #galeria img{
@@ -238,13 +218,11 @@ animation:entrada .8s;
 }
 
 
-
 @keyframes entrada{
 
 from{
 
 opacity:0;
-
 transform:translateY(20px);
 
 }
@@ -257,12 +235,9 @@ opacity:1;
 
 }
 
-
 </style>
 
-
 </head>
-
 
 
 <body>
@@ -272,39 +247,28 @@ opacity:1;
 
 
 <div class="mis15">
-
-COMPARTÍ LA FIESTA EN VIVO
-
+MIS 15
 </div>
 
 
 <div class="numero">
-
 15
-
 </div>
 
 
 <div class="nombre">
-
 Mía
-
 </div>
 
 
 <div class="titulo">
-
 TUS FOTOS
-
 </div>
 
 
 <div class="texto">
-
-COMPARTÍ LA FIESTA EN VIVO ✨
-
+COMPARTÍ LA FIESTA EN VIVO
 </div>
-
 
 
 <input 
@@ -317,15 +281,11 @@ accept="image/*">
 
 
 <button onclick="subirFoto()">
-
 SUBIR FOTO
-
 </button>
 
 
-
 <div id="galeria"></div>
-
 
 
 </div>
@@ -343,7 +303,6 @@ const SUPABASE_KEY =
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqenRnbXVodmZzd3VtZW5haGN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2Mjk1MDksImV4cCI6MjEwMDIwNTUwOX0.Uw8YZQgenClMn8crmDTiY7Gh3GicQ96SRNgZEH3pNyY";
 
 
-
 const supabase =
 window.supabase.createClient(
 SUPABASE_URL,
@@ -359,7 +318,6 @@ const archivo =
 document.getElementById("archivo").files[0];
 
 
-
 if(!archivo){
 
 alert("Elegí una foto primero");
@@ -369,14 +327,15 @@ return;
 }
 
 
-
 const nombre =
 Date.now()+"-"+archivo.name;
 
 
 
 const {error}=await supabase.storage
+
 .from("Fotos-evento")
+
 .upload(nombre,archivo);
 
 
@@ -391,15 +350,20 @@ return;
 
 
 
-const url = 
-SUPABASE_URL+
-"/storage/v1/object/public/Fotos-evento/"+
+const url =
+
+SUPABASE_URL +
+
+"/storage/v1/object/public/Fotos-evento/" +
+
 nombre;
 
 
 
 await supabase
+
 .from("fotos")
+
 .insert({
 
 url:url
@@ -408,7 +372,7 @@ url:url
 
 
 
-alert("Foto subida ✨");
+alert("Foto subida correctamente");
 
 
 mostrarFotos();
@@ -422,8 +386,11 @@ async function mostrarFotos(){
 
 
 const {data,error}=await supabase
+
 .from("fotos")
+
 .select("*")
+
 .order("created_at",
 {ascending:false});
 
@@ -453,10 +420,10 @@ data.forEach(foto=>{
 galeria.innerHTML +=
 
 `
+
 <img src="${foto.url}">
+
 `;
-
-
 
 });
 
@@ -468,10 +435,7 @@ galeria.innerHTML +=
 mostrarFotos();
 
 
-
 </script>
 
 
 </body>
-
-</html>
