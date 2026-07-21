@@ -84,7 +84,7 @@ const nombre = Date.now() + "-" + archivo.name;
 
 
 const {data,error}=await supabase.storage
-.from("fotos-evento")
+.from("Fotos-evento")
 .upload(nombre,archivo);
 
 
