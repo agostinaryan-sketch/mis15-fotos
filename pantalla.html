@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mía - Mis 15</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+body{
+
+margin:0;
+background:#000;
+overflow:hidden;
+height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+}
+
+
+img{
+
+max-width:90%;
+max-height:90%;
+
+border-radius:25px;
+
+box-shadow:
+0 0 50px rgba(255,255,255,.3);
+
+object-fit:contain;
+
+transition:opacity 1s;
+
+}
+
+
+.fade{
+
+opacity:0;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<img id="foto" src="">
+
+
+
+<script>
+
+
+const SUPABASE_URL =
+"https://xjztgmuhvfswumenahcy.supabase.co";
+
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqenRnbXVodmZzd3VtZW5haGN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2Mjk1MDksImV4cCI6MjEwMDIwNTUwOX0.Uw8YZQgenClMn8crmDTiY7Gh3GicQ96SRNgZEH3pNyY";
+
+
+const clienteSupabase =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+
+let fotos=[];
+
+let posicion=0;
+
+
+
+async function cargarFotos(){
+
+
+const {data,error}=await clienteSupabase
+
+.from("fotos")
+
+.select("*")
+
+.order("created_at",{ascending:true});
+
+
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+
+
+fotos=data;
+
+
+}
+
+
+
+async function mostrarFoto(){
+
+
+if(fotos.length===0){
+
+await cargarFotos();
+
+}
+
+
+
+if(fotos.length===0){
+
+return;
+
+}
+
+
+
+const imagen =
+document.getElementById("foto");
+
+
+imagen.classList.add("fade");
+
+
+
+setTimeout(()=>{
+
+
+imagen.src =
+fotos[posicion].url;
+
+
+imagen.classList.remove("fade");
+
+
+posicion++;
+
+
+if(posicion>=fotos.length){
+
+posicion=0;
+
+}
+
+
+},1000);
+
+
+
+}
+
+
+
+async function actualizar(){
+
+
+await cargarFotos();
+
+
+mostrarFoto();
+
+
+}
+
+
+
+actualizar();
+
+
+
+setInterval(()=>{
+
+mostrarFoto();
+
+},6000);
+
+
+
+setInterval(()=>{
+
+actualizar();
+
+},15000);
+
+
+
+</script>
+
+
+</body>
+
+</html>
