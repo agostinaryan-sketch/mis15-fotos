@@ -551,57 +551,130 @@ id="archivo"
 accept="image/*">
 
 <button onclick="subirFoto()">
+SUBIR FOTO
+
+</button>
+
+
+
+<div id="galeria"></div>
+
+
+
+</div>
+
+
+
+
+<script>
+
+
+
+const SUPABASE_URL =
+"https://xjztgmuhvfswumenahcy.supabase.co";
+
+
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqenRnbXVodmZzd3VtZW5haGN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2Mjk1MDksImV4cCI6MjEwMDIwNTUwOX0.Uw8YZQgenClMn8crmDTiY7Gh3GicQ96SRNgZEH3pNyY";
+
+
+
+const clienteSupabase =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+
+
 
 async function subirFoto(){
 
-    const archivo = document.getElementById("archivo").files[0];
 
-    if(!archivo){
-        alert("Elegí una foto primero");
-        return;
-    }
+const archivo =
+document.getElementById("archivo").files[0];
 
-    const nombre = Date.now() + "-" + archivo.name;
 
-    const { data, error } = await clienteSupabase.storage
-        .from("Fotos-evento")
-        .upload(nombre, archivo);
+if(!archivo){
 
-    console.log("UPLOAD DATA:", data);
-    console.log("UPLOAD ERROR:", error);
+alert("Elegí una foto primero");
 
-    if(error){
-        alert(error.message);
-        return;
-    }
-
-    const { data: publicData } = clienteSupabase.storage
-        .from("Fotos-evento")
-        .getPublicUrl(nombre);
-
-    console.log("PUBLIC URL:", publicData.publicUrl);
-
-    const { error: insertError } = await clienteSupabase
-        .from("fotos")
-        .insert({
-            url: publicData.publicUrl
-        });
-
-    console.log("INSERT ERROR:", insertError);
-
-    if(insertError){
-        alert(insertError.message);
-        return;
-    }
-
-    alert("Foto subida correctamente");
-
-    mostrarFotos();
-}
+return;
 
 }
+
+
+
+const nombre =
+Date.now()+"-"+archivo.name;
+
+
+
+const {error}=await clienteSupabase.storage
+
+.from("Fotos-evento")
+
+.upload(nombre,archivo);
+
+
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+
+
+
+const url =
+
+SUPABASE_URL+
+
+"/storage/v1/object/public/Fotos-evento/"
+
++
+
+nombre;
+
+
+
+
+
+await clienteSupabase
+
+.from("fotos")
+
+.insert({
+
+url:url
+
+});
+
+
+
+
+alert("Foto subida correctamente");
+
+
+
+mostrarFotos();
+
+
+
+}
+
+
+
+
 
 async function mostrarFotos(){
+
+
 
 const {data,error}=await clienteSupabase
 
@@ -611,6 +684,8 @@ const {data,error}=await clienteSupabase
 
 .order("created_at",{ascending:false});
 
+
+
 if(error){
 
 console.log(error);
@@ -619,26 +694,46 @@ return;
 
 }
 
+
+
 const galeria =
 document.getElementById("galeria");
 
+
+
 galeria.innerHTML="";
+
+
 
 data.forEach(foto=>{
 
-galeria.innerHTML+=`
 
-<img src="${foto.url}" loading="lazy">
+galeria.innerHTML +=
+
+`
+
+<img src="${foto.url}">
 
 `;
 
+
+
 });
+
+
 
 }
 
+
+
+
+
 mostrarFotos();
 
+
+
 </script>
+
 
 </body>
 
