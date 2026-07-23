@@ -1,135 +1,426 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>COMPARTÍ LA FIESTA EN VIVO</title>
+<title>Mis 15 Mía</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500&display=swap');
+
+
+*{
+box-sizing:border-box;
+}
+
 
 body{
+
 margin:0;
-padding:30px 20px;
-background:#050505;
+padding:40px 20px;
+
+background:
+radial-gradient(circle at top,#222 0%,#050505 45%,#000 100%);
+
 color:white;
+
 text-align:center;
-font-family:Montserrat,sans-serif;
+
+font-family:'Montserrat',sans-serif;
+
+min-height:100vh;
+
 }
+
+
 
 .contenedor{
-max-width:1000px;
+
+max-width:1100px;
 margin:auto;
+
 }
+
+
+
+/* FOTO PRINCIPAL */
+
+.portada{
+
+margin:auto;
+
+width:100%;
+max-width:420px;
+
+padding:12px;
+
+background:linear-gradient(145deg,#ffffff,#777,#111,#fff);
+
+border-radius:25px;
+
+box-shadow:
+0 0 40px rgba(255,255,255,.15);
+
+}
+
+
+
+.portada img{
+
+width:100%;
+
+display:block;
+
+border-radius:18px;
+
+}
+
+
+
+
+/* TITULOS */
+
 
 .mis15{
+
+margin-top:45px;
+
 font-family:'Cormorant Garamond',serif;
-font-size:60px;
-letter-spacing:8px;
+
+font-size:55px;
+
+letter-spacing:12px;
+
 }
+
+
 
 .numero{
-font-size:150px;
+
 font-family:'Cormorant Garamond',serif;
-background:linear-gradient(#fff,#888,#fff);
+
+font-size:170px;
+
+line-height:1;
+
+font-weight:600;
+
+
+background:
+linear-gradient(
+180deg,
+#ffffff,
+#999,
+#ffffff,
+#555,
+#ffffff
+);
+
+
 -webkit-background-clip:text;
+
 color:transparent;
+
+
+text-shadow:
+0 0 25px rgba(255,255,255,.25);
+
 }
+
+
 
 .nombre{
+
 font-family:'Great Vibes',cursive;
-font-size:90px;
+
+font-size:100px;
+
+margin-top:-20px;
+
+color:#fff;
+
+text-shadow:
+0 0 20px rgba(255,255,255,.35);
+
 }
+
+
+
+.linea{
+
+width:120px;
+
+height:1px;
+
+background:#aaa;
+
+margin:35px auto;
+
+}
+
+
 
 .titulo{
-margin-top:50px;
-font-size:45px;
-letter-spacing:6px;
+
+font-family:'Cormorant Garamond',serif;
+
+font-size:50px;
+
+letter-spacing:8px;
+
 }
+
+
 
 .texto{
-margin:20px;
-letter-spacing:4px;
+
+margin-top:15px;
+
+font-size:15px;
+
+letter-spacing:5px;
+
 color:#ccc;
+
 }
 
-input,button{
+
+
+
+
+/* SUBIDA */
+
+
+input[type=file]{
+
+margin-top:35px;
+
 padding:15px;
-margin:10px;
+
+background:#111;
+
+border:1px solid #555;
+
 border-radius:30px;
+
+color:white;
+
+width:90%;
+
+max-width:400px;
+
 }
+
+
 
 button{
-background:black;
-color:white;
-border:1px solid white;
-padding:15px 40px;
+
+
+margin-top:15px;
+
+background:white;
+
+color:black;
+
+border:none;
+
+padding:16px 45px;
+
+border-radius:40px;
+
+font-weight:500;
+
+letter-spacing:2px;
+
 cursor:pointer;
+
+transition:.3s;
+
 }
+
+
+
+button:hover{
+
+transform:scale(1.05);
+
+}
+
+
+
+/* GALERIA */
+
 
 #galeria{
+
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
 gap:20px;
-margin-top:40px;
+
+margin-top:60px;
+
 }
 
+
+
 #galeria img{
+
 width:100%;
-border-radius:20px;
+
+border-radius:18px;
+
+border:1px solid #333;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.5);
+
 }
+
+
+
+
+@media(max-width:600px){
+
+
+.numero{
+
+font-size:120px;
+
+}
+
+
+.nombre{
+
+font-size:75px;
+
+}
+
+
+.titulo{
+
+font-size:38px;
+
+}
+
+
+.mis15{
+
+font-size:42px;
+
+}
+
+}
+
+
 </style>
+
 
 </head>
 
+
 <body>
+
 
 <div class="contenedor">
 
-<div class="mis15">
-MIS 15
+
+
+<!-- FOTO DE MIA -->
+
+<div class="portada">
+
+<img src="images/DSC01151.jpg">
+
 </div>
+
+
+
+<div class="mis15">
+
+MIS 15
+
+</div>
+
+
 
 <div class="numero">
+
 15
+
 </div>
+
+
 
 <div class="nombre">
+
 Mía
+
 </div>
+
+
+
+<div class="linea"></div>
+
+
 
 <div class="titulo">
+
 TUS FOTOS
+
 </div>
 
+
+
 <div class="texto">
+
 COMPARTÍ LA FIESTA EN VIVO
+
 </div>
+
+
 
 <input type="file" id="archivo" accept="image/*">
 
+
 <br>
 
+
 <button onclick="subirFoto()">
+
 SUBIR FOTO
+
 </button>
 
+
+
 <div id="galeria"></div>
+
+
 
 </div>
 
 
+
+
 <script>
+
+
 
 const SUPABASE_URL =
 "https://xjztgmuhvfswumenahcy.supabase.co";
 
 
+
 const SUPABASE_KEY =
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqenRnbXVodmZzd3VtZW5haGN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2Mjk1MDksImV4cCI6MjEwMDIwNTUwOX0.Uw8YZQgenClMn8crmDTiY7Gh3GicQ96SRNgZEH3pNyY";
+
 
 
 const clienteSupabase =
@@ -140,92 +431,153 @@ SUPABASE_KEY
 
 
 
+
+
 async function subirFoto(){
+
 
 const archivo =
 document.getElementById("archivo").files[0];
 
 
 if(!archivo){
+
 alert("Elegí una foto primero");
+
 return;
+
 }
+
 
 
 const nombre =
 Date.now()+"-"+archivo.name;
 
 
+
 const {error}=await clienteSupabase.storage
+
 .from("Fotos-evento")
+
 .upload(nombre,archivo);
 
 
+
 if(error){
+
 alert(error.message);
+
 return;
+
 }
 
 
+
+
 const url =
+
 SUPABASE_URL+
-"/storage/v1/object/public/Fotos-evento/"+
+
+"/storage/v1/object/public/Fotos-evento/"
+
++
+
 nombre;
 
 
+
+
+
 await clienteSupabase
+
 .from("fotos")
+
 .insert({
+
 url:url
+
 });
+
+
 
 
 alert("Foto subida correctamente");
 
 
+
 mostrarFotos();
 
+
+
 }
+
+
 
 
 
 async function mostrarFotos(){
 
+
+
 const {data,error}=await clienteSupabase
+
 .from("fotos")
+
 .select("*")
+
 .order("created_at",{ascending:false});
 
 
+
 if(error){
+
 console.log(error);
+
 return;
+
 }
+
 
 
 const galeria =
 document.getElementById("galeria");
 
 
+
 galeria.innerHTML="";
+
 
 
 data.forEach(foto=>{
 
+
 galeria.innerHTML +=
+
 `
+
 <img src="${foto.url}">
+
 `;
+
+
 
 });
 
+
+
 }
+
+
+
 
 
 mostrarFotos();
 
 
+
 </script>
 
+
 </body>
+
 </html>
